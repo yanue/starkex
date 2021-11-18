@@ -1,4 +1,4 @@
-## stark key authentication library, signature generator for dydx exchange implemented in pure golang
+# stark key authentication library, signature generator for dydx exchange
 
 for the following operations:
 
