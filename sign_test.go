@@ -10,7 +10,7 @@ const MOCK_PRIVATE_KEY = "58c7d5a90b1776bde86ebac077e053ed85b0f7164f53b080304a53
 
 func TestNewOrderSigner(t *testing.T) {
 	param := OrderSignParam{
-		NetworkId:  NETWORK_ID_ROPSTEN,
+		NetworkId:  NETWORK_ID_GOERLI,
 		Market:     "ETH-USD",
 		Side:       "BUY",
 		PositionId: 12345,
@@ -27,7 +27,7 @@ func TestNewOrderSigner(t *testing.T) {
 
 func TestNewWithdrawSigner(t *testing.T) {
 	param := WithdrawSignParam{
-		NetworkId:   NETWORK_ID_ROPSTEN,
+		NetworkId:   NETWORK_ID_GOERLI,
 		PositionId:  12345,
 		HumanAmount: "49.478023",
 		ClientId:    "This is an ID that the client came up with to describe this withdrawal",
