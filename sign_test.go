@@ -2,11 +2,17 @@ package starkex
 
 import (
 	"fmt"
+	"log"
 	"testing"
+	"time"
 )
 
 const MOCK_PUBLIC_KEY = "3b865a18323b8d147a12c556bfb1d502516c325b1477a23ba6c77af31f020fd"
 const MOCK_PRIVATE_KEY = "58c7d5a90b1776bde86ebac077e053ed85b0f7164f53b080304a531947f46e3"
+
+func init() {
+	log.SetFlags(log.Ldate | log.Lmicroseconds)
+}
 
 func TestNewOrderSigner(t *testing.T) {
 	param := OrderSignParam{
@@ -20,7 +26,10 @@ func TestNewOrderSigner(t *testing.T) {
 		ClientId:   "This is an ID that the client came up with to describe this order",
 		Expiration: "2020-09-17T04:15:55.028Z",
 	}
+	log.Println("start")
+	ts := time.Now().UnixMilli()
 	sign, err := OrderSign(MOCK_PRIVATE_KEY, param)
+	fmt.Println("ts", time.Now().UnixMilli()-ts)
 	// 00cecbe513ecdbf782cd02b2a5efb03e58d5f63d15f2b840e9bc0029af04e8dd0090b822b16f50b2120e4ea9852b340f7936ff6069d02acca02f2ed03029ace5
 	fmt.Println("sign,err", sign, err)
 }

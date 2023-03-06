@@ -3,6 +3,7 @@ package starkex
 import (
 	"encoding/json"
 	"math/big"
+	"sync"
 )
 
 /**
@@ -36,17 +37,23 @@ func init() {
 func PedersenHash(str ...string) string {
 	NElementBitsHash := FIELD_PRIME.BitLen()
 	point := pedersenCfg.ConstantPoints[0]
+	wg := sync.WaitGroup{}
 	for i, s := range str {
-		x, _ := big.NewInt(0).SetString(s, 10)
-		pointList := pedersenCfg.ConstantPoints[2+i*NElementBitsHash : 2+(i+1)*NElementBitsHash]
-		n := big.NewInt(0)
-		for _, pt := range pointList {
-			n.And(x, big.NewInt(1))
-			if n.Cmp(big.NewInt(0)) > 0 {
-				point = eccAdd(point, pt, FIELD_PRIME)
+		go func(i int, s string) {
+			wg.Add(1)
+			x, _ := big.NewInt(0).SetString(s, 10)
+			pointList := pedersenCfg.ConstantPoints[2+i*NElementBitsHash : 2+(i+1)*NElementBitsHash]
+			n := big.NewInt(0)
+			for _, pt := range pointList {
+				n.And(x, big.NewInt(1))
+				if n.Cmp(big.NewInt(0)) > 0 {
+					point = eccAdd(point, pt, FIELD_PRIME)
+				}
+				x = x.Rsh(x, 1)
 			}
-			x = x.Rsh(x, 1)
-		}
+			wg.Done()
+		}(i, s)
 	}
+	wg.Wait()
 	return point[0].String()
 }
