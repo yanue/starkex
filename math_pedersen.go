@@ -39,8 +39,8 @@ func PedersenHash(str ...string) string {
 	point := pedersenCfg.ConstantPoints[0]
 	wg := sync.WaitGroup{}
 	for i, s := range str {
+		wg.Add(1)
 		go func(i int, s string) {
-			wg.Add(1)
 			x, _ := big.NewInt(0).SetString(s, 10)
 			pointList := pedersenCfg.ConstantPoints[2+i*NElementBitsHash : 2+(i+1)*NElementBitsHash]
 			n := big.NewInt(0)
